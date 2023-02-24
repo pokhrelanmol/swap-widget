@@ -24,5 +24,6 @@ export interface TokenInputProps {
   tokenImage: string
   tokenSymbol?: string
   selected?: boolean
+  type?: "from" | "to"
   setTokenData?: (tokenData: TokenData) => void
 }

@@ -5,14 +5,25 @@ import { TokenInputProps } from "./types"
 
 const TokenItem = (props: TokenInputProps) => {
   const [selected, setSelected] = useState(false)
-  const { toggleSearch, setSelectedToken } = useWidgetContext()
+  const { toggleSearch } = useWidgetContext()
+  const { setToToken, setFromToken, toToken, fromToken } = useWidgetContext()
 
   const handleClick = () => {
-    setSelectedToken({
-      name: props.tokenName,
-      symbol: props.tokenSymbol,
-      logoURI: props.tokenImage,
-    })
+    if (props.type === "from") {
+      setFromToken({
+        ...fromToken,
+        name: props.tokenName,
+        symbol: props.tokenSymbol,
+        logoURI: props.tokenImage,
+      })
+    } else {
+      setToToken({
+        ...toToken,
+        name: props.tokenName,
+        symbol: props.tokenSymbol,
+        logoURI: props.tokenImage,
+      })
+    }
     setSelected((prev) => !prev)
     toggleSearch()
   }

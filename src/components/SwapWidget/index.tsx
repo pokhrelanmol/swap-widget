@@ -4,9 +4,27 @@ import Input from "../elements/Input"
 import SearchModal from "../SearchModal"
 import { useWidgetContext } from "./WidgetProvider"
 import { CgArrowsExchangeAltV } from "react-icons/cg"
+import { useState } from "react"
 
 const SwapWidget = () => {
-  const { showSearchModal } = useWidgetContext()
+  const [type, setType] = useState<"to" | "from">("to")
+  const { showSearchModal, toToken, fromToken, setToToken, setFromToken, toggleSearch } =
+    useWidgetContext()
+
+  const handleClick = (type: "to" | "from") => {
+    setType(type)
+    toggleSearch()
+  }
+
+  const updateAmount = (e: React.ChangeEvent<HTMLInputElement>, from: boolean) => {
+    const amount = e.target.value
+    if (from) {
+      setFromToken({ ...fromToken, amount: amount })
+    } else {
+      setToToken({ ...toToken, amount: amount })
+    }
+  }
+
   return (
     <div className="fixed w-[400px] h-[80Vh] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] shadow-sm bg-[#14213d] text-white rounded-lg">
       <div
@@ -20,16 +38,20 @@ const SwapWidget = () => {
       </div>
       <div className="relative mt-1 rounded-md shadow-sm px-5 h-[80%] overflow-scroll scrollbar-hide">
         {showSearchModal ? (
-          <SearchModal />
+          <SearchModal type={type} />
         ) : (
           <div className="flex flex-col h-full relative">
             <div className="flex flex-col justify-center items-center mt-5 h-[45%] bg-gray-600 rounded-lg">
               <Input
+                onChange={(e) => {
+                  updateAmount(e, true)
+                }}
+                value={fromToken.amount}
                 placeholder="0.00"
                 id="price"
                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
               >
-                <Button />
+                <Button token={fromToken} onClick={() => handleClick("from")} />
               </Input>
             </div>
 
@@ -42,11 +64,13 @@ const SwapWidget = () => {
 
             <div className="flex flex-col justify-center items-center mt-5 h-[45%] bg-gray-600 rounded-lg">
               <Input
+                onChange={(e) => updateAmount(e, false)}
                 placeholder="0.00"
                 id="price"
+                value={toToken.amount}
                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
               >
-                <Button />
+                <Button token={toToken} onClick={() => handleClick("to")} />
               </Input>
             </div>
           </div>

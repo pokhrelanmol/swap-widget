@@ -2,8 +2,12 @@ import React, { useState } from "react"
 import Input from "../elements/Input"
 import TokenItem from "../elements/TokenItem"
 import { tokenData } from "../../constants/mockdata"
+import { TokenData } from "../SwapWidget/types"
+type SearchModal = {
+  type: "from" | "to"
+}
 
-const SearchModal = () => {
+const SearchModal = (props: SearchModal) => {
   const [tokens, setTokens] = useState(tokenData.tokens.slice(0, 10))
   const [searchWord, setSearchWord] = useState<string>("")
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +40,7 @@ const SearchModal = () => {
             tokenName={token.name ? token.name : token.symbol ? token.symbol : "Unknown"}
             tokenImage={token.logoURI || ""}
             tokenSymbol={token.symbol}
+            type={props.type}
           />
         ))}
       </ul>
