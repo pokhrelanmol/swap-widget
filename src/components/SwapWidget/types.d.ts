@@ -5,6 +5,7 @@ export interface WidgetProps {
 export interface TokenData {
   chainId?: number
   address?: string
+  amount?: string
   name?: string
   symbol?: string
   decimals?: number
