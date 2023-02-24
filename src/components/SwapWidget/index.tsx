@@ -5,6 +5,7 @@ import SearchModal from "../SearchModal"
 import { useWidgetContext } from "./WidgetProvider"
 import { CgArrowsExchangeAltV } from "react-icons/cg"
 import { useState } from "react"
+import ButtonConnect from "../elements/ButtonConnect"
 
 const SwapWidget = () => {
   const [type, setType] = useState<"to" | "from">("to")
@@ -46,6 +47,7 @@ const SwapWidget = () => {
                 onChange={(e) => {
                   updateAmount(e, true)
                 }}
+                type="number"
                 value={fromToken.amount}
                 placeholder="0.00"
                 id="price"
@@ -57,16 +59,17 @@ const SwapWidget = () => {
 
             <CgArrowsExchangeAltV
               className="text-6xl text-gray-400 p-1 border border-[#ccc] bg-bg rounded-full
-               hover:animate-pulse transition duration-300 absolute top-[50%] left-[50%]
+               hover:animate-pulse transition duration-300 absolute top-[45%] left-[50%]
               -translate-x-[50%] -translate-y-[50%]
             "
             />
 
-            <div className="flex flex-col justify-center items-center mt-5 h-[45%] bg-gray-600 rounded-lg">
+            <div className="flex flex-col justify-center items-center mt-5 h-[40%] bg-gray-600 rounded-lg">
               <Input
                 onChange={(e) => updateAmount(e, false)}
                 placeholder="0.00"
                 id="price"
+                type="number"
                 value={toToken.amount}
                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
               >
@@ -75,6 +78,9 @@ const SwapWidget = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className="w-full flex justify-center mb-4">
+        <ButtonConnect />
       </div>
     </div>
   )

@@ -5,13 +5,18 @@ import { useWidgetContext } from "../SwapWidget/WidgetProvider"
 
 type ButtonProps = {
   token: TokenData
+  className?: string
   onClick: () => void
 }
 
 const Button = (props: ButtonProps) => {
   return (
     <button
-      className=" bg-[#43a098] text-white px-3 py-2 rounded-lg font-bold text-sm flex absolute right-1 top-[50%] -translate-y-[50%]"
+      className={
+        props.className
+          ? props.className
+          : "bg-[#43a098] text-white px-3 py-2 rounded-lg font-bold text-sm flex absolute right-1 top-[50%] -translate-y-[50%]"
+      }
       onClick={props.onClick}
     >
       <img
