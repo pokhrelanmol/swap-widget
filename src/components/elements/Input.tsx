@@ -3,8 +3,6 @@ import { useWidgetContext } from "../SwapWidget/WidgetProvider"
 import { InputProps } from "./types"
 
 const Input = (props: InputProps) => {
-  const { showSearchModal, toggleSearch, toToken, setToToken, fromToken, setFromToken } =
-    useWidgetContext()
   return (
     <div className="my-1 py-1 relative">
       <input
