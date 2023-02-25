@@ -42,11 +42,12 @@ const SwapWidget = () => {
           <SearchModal type={type} />
         ) : (
           <div className="flex flex-col h-full relative">
-            <div className="flex flex-col justify-center items-center mt-5 h-[45%] bg-gray-600 rounded-lg">
+            <div className="flex flex-col justify-center items-center mt-5 h-[40%] bg-gray-600 rounded-lg">
               <Input
                 onChange={(e) => {
                   updateAmount(e, true)
                 }}
+                autocomplete="off"
                 type="number"
                 value={fromToken.amount}
                 placeholder="0.00"
@@ -70,6 +71,7 @@ const SwapWidget = () => {
                 placeholder="0.00"
                 id="price"
                 type="number"
+                autocomplete="off"
                 value={toToken.amount}
                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
               >
@@ -79,9 +81,7 @@ const SwapWidget = () => {
           </div>
         )}
       </div>
-      <div className="w-full flex justify-center mb-4">
-        <ButtonConnect />
-      </div>
+      <ButtonConnect />
     </div>
   )
 }

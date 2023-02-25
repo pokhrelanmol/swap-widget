@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import Input from "../elements/Input"
 import TokenItem from "../elements/TokenItem"
 import { tokenData } from "../../constants/mockdata"
-import { TokenData } from "../SwapWidget/types"
 type SearchModal = {
   type: "from" | "to"
 }
@@ -24,7 +23,7 @@ const SearchModal = (props: SearchModal) => {
     }
   }
   return (
-    <div>
+    <div className="mb-3">
       <Input
         type="text"
         placeholder="Search"
@@ -33,6 +32,7 @@ const SearchModal = (props: SearchModal) => {
         value={searchWord}
         className="my-1 px-4 py-1 text-xl border border-gray-600 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
       />
+
       <ul className="w-full list-none h-full overflow-y-scroll overflow-x-hidden scrollbar-hide">
         {tokens.map((token, index) => (
           <TokenItem

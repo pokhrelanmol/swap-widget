@@ -9,6 +9,7 @@ export interface InputProps {
   label?: string
   name?: string
   error?: string
+  autocomplete?: string
   onError?: (error: string) => void
 }
 

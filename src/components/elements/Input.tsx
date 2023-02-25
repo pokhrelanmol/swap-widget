@@ -12,6 +12,7 @@ const Input = (props: InputProps) => {
         value={props.value}
         onChange={props.onChange}
         name={props.name}
+        autoComplete={props.autocomplete || "on"}
         id={props.id}
         className={
           props.className ||
