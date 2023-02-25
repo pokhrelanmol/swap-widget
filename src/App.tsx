@@ -1,8 +1,6 @@
 import { useState } from "react"
 import reactLogo from "./assets/react.svg"
-import Modal from "./components/Modal"
 import ShowButton from "./components/ShowButton"
-import Swap from "./components/swap/Swap"
 import SwapWidget from "./components/SwapWidget"
 import { useWidgetContext } from "./components/SwapWidget/WidgetProvider"
 
