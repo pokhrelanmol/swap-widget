@@ -6,10 +6,12 @@ import { TokenInputProps } from "./types";
 const TokenItem = (props: TokenInputProps) => {
     const [selected, setSelected] = useState(false);
     const { toggleSearch } = useWidgetContext();
-    const { setToToken, setFromToken, toToken, fromToken } = useWidgetContext();
+    const { setToToken, setFromToken, toToken, fromToken, setLoading } =
+        useWidgetContext();
 
     const handleClick = () => {
         if (props.type === "from") {
+            setLoading(true);
             setFromToken({
                 ...fromToken,
                 name: props.tokenName,

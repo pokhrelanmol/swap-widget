@@ -19,6 +19,8 @@ const SwapWidget = () => {
         setToToken,
         setFromToken,
         toggleSearch,
+        setLoading,
+        loading,
     } = useWidgetContext();
 
     const handleSwapInput = () => {
@@ -38,6 +40,7 @@ const SwapWidget = () => {
         // TODO: check from amount and get quote using API
         const amount = Number(e.target.value);
         if (from) {
+            setLoading(true);
             setFromToken({ ...fromToken, amount: amount });
         } else {
             setToToken({ ...toToken, amount: amount });
@@ -76,6 +79,11 @@ const SwapWidget = () => {
                                     onClick={() => handleClick("from")}
                                 />
                             </Input>
+                            {fromToken.USD && (
+                                <p className="text-gray-400 self-start ml-5 text-sm mt-2">
+                                    1 {fromToken.symbol} = $ {fromToken.USD}
+                                </p>
+                            )}
                         </div>
 
                         <CgArrowsExchangeAltV
@@ -101,7 +109,13 @@ const SwapWidget = () => {
                                     onClick={() => handleClick("to")}
                                 />
                             </Input>
+                            {toToken.USD && (
+                                <p className="text-gray-400 self-start ml-5 text-sm mt-2">
+                                    1 {toToken.symbol} = $ {toToken.USD}
+                                </p>
+                            )}
                         </div>
+                        <p>{loading && "Fetching best prices..."}</p>
                     </div>
                 )}
             </div>
