@@ -1,13 +1,13 @@
-import React from "react"
-import { SearchBarProps } from "./types"
+import React from "react";
+import { SearchBarProps } from "./types";
 
 const SearchBar = (props: SearchBarProps) => {
-  return (
-    <form>
-      <input type="text" placeholder="Search" />
-      {props.children}
-    </form>
-  )
-}
+    return (
+        <form>
+            <input type="text" placeholder="Search" />
+            {props.children}
+        </form>
+    );
+};
 
-export default SearchBar
+export default SearchBar;

@@ -3,44 +3,53 @@ import Button from "../elements/Button";
 import Input from "../elements/Input";
 import SearchModal from "../SearchModal";
 import { useWidgetContext } from "./WidgetProvider";
-import { CgArrowsExchangeAltV, CgNametag } from "react-icons/cg";
-import { useEffect, useState } from "react";
-import { tokenData } from "../../constants/mockdata";
-import { TokenData } from "./types";
-import axios from "axios";
-import { parseEther } from "ethers";
+import { CgArrowsExchangeAltV } from "react-icons/cg";
+
+import { actionTypes } from "./actions";
+import { useState } from "react";
 const SwapWidget = () => {
     const [type, setType] = useState<"to" | "from">("from");
 
-    const {
-        showSearchModal,
-        toToken,
-        fromToken,
-        setToToken,
-        setFromToken,
-        toggleSearch,
-    } = useWidgetContext();
+    const { state, dispatch } = useWidgetContext();
 
     const handleSwapInput = () => {
-        console.log(fromToken, toToken);
-        setFromToken(toToken);
-        setToToken(fromToken);
+        dispatch({
+            type: actionTypes.SET_FROM_TOKEN,
+            payload: state.toToken,
+        });
+        dispatch({
+            type: actionTypes.SET_TO_TOKEN,
+            payload: state.fromToken,
+        });
     };
     const handleClick = (type: "to" | "from") => {
         setType(type);
-        toggleSearch();
+        dispatch({
+            type: actionTypes.TOGGLE_SEARCH,
+            payload: true,
+        });
     };
 
     const updateAmount = async (
         e: React.ChangeEvent<HTMLInputElement>,
         from: boolean
     ) => {
-        // TODO: check from amount and get quote using API
         const amount = Number(e.target.value);
         if (from) {
-            setFromToken({ ...fromToken, amount: amount });
+            dispatch({
+                type: actionTypes.SET_LOADING,
+                payload: true,
+            });
+
+            dispatch({
+                type: actionTypes.SET_FROM_TOKEN,
+                payload: { ...state.fromToken, amount: amount },
+            });
         } else {
-            setToToken({ ...toToken, amount: amount });
+            dispatch({
+                type: actionTypes.SET_TO_TOKEN,
+                payload: { ...state.toToken, amount: amount },
+            });
         }
     };
 
@@ -56,7 +65,7 @@ const SwapWidget = () => {
                 </button>
             </div>
             <div className="relative mt-1 rounded-md shadow-sm px-5 h-[80%] overflow-scroll scrollbar-hide">
-                {showSearchModal ? (
+                {state.showSearchModal ? (
                     <SearchModal type={type} />
                 ) : (
                     <div className="flex flex-col h-full relative">
@@ -65,17 +74,23 @@ const SwapWidget = () => {
                                 onChange={(e) => {
                                     updateAmount(e, true);
                                 }}
-                                value={fromToken.amount}
+                                value={state.fromToken.amount}
                                 type="text"
                                 placeholder="0.00"
                                 id="price"
                                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
                             >
                                 <Button
-                                    token={fromToken}
+                                    token={state.fromToken}
                                     onClick={() => handleClick("from")}
                                 />
                             </Input>
+                            {state.fromToken.USD && (
+                                <p className="text-gray-400 self-start ml-5 text-sm mt-2">
+                                    1 {state.fromToken.symbol} = ${" "}
+                                    {state.fromToken.USD}
+                                </p>
+                            )}
                         </div>
 
                         <CgArrowsExchangeAltV
@@ -92,16 +107,23 @@ const SwapWidget = () => {
                                 placeholder="0.00"
                                 type="text"
                                 id="price"
-                                value={toToken.amount}
+                                value={state.toToken.amount}
                                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
                                 disabled={true}
                             >
                                 <Button
-                                    token={toToken}
+                                    token={state.toToken}
                                     onClick={() => handleClick("to")}
                                 />
                             </Input>
+                            {state.toToken.USD && (
+                                <p className="text-gray-400 self-start ml-5 text-sm mt-2">
+                                    1 {state.toToken.symbol} = ${" "}
+                                    {state.toToken.USD}
+                                </p>
+                            )}
                         </div>
+                        <p>{state.loading && "Fetching best prices..."}</p>
                     </div>
                 )}
             </div>

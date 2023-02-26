@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Input from "../elements/Input";
 import TokenItem from "../elements/TokenItem";
 import { tokenData } from "../../constants/mockdata";
-import { TokenData } from "../SwapWidget/types";
 type SearchModal = {
     type: "from" | "to";
 };
