@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { TokenData } from "./types";
 import { tokenData } from "../../constants/mockdata";
-import { parseEther } from "ethers";
+import { formatUnits, parseEther, parseUnits } from "ethers";
 export interface WidgetContextProps {
     showWidgetModal: boolean;
     showSearchModal: boolean;
@@ -78,25 +78,41 @@ const WidgetProvider = ({ children }: { children: React.ReactNode }) => {
     });
     useEffect(() => {
         if (widgetData.fromToken.amount) {
-            console.log(widgetData.fromToken);
             (async () => {
                 const res = await fetch(
                     `https://api.1inch.io/v5.0/1/quote?fromTokenAddress=${
                         widgetData.fromToken?.address
                     }&toTokenAddress=${
                         widgetData.toToken?.address
-                    }&amount=${parseEther(
-                        widgetData.fromToken?.amount!.toString()
+                    }&amount=${parseUnits(
+                        widgetData.fromToken?.amount!.toString(),
+                        widgetData.fromToken?.decimals
                     )}`
                 );
-                // const res = await fetch(
-                //     `https://api.1inch.io/v5.0/1/quote?fromTokenAddress=0x111111111117dC0aa78b770fA6A738034120C302&toTokenAddress=0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9&amount=10000000000000000000`
-                // );
+
                 const data = await res.json();
-                console.log(data);
+                const _toToken = data.toToken;
+                let amt = formatUnits(data.toTokenAmount, _toToken.decimals);
+                amt = (+amt).toFixed(6);
+                const formattedData: TokenData = {
+                    address: _toToken.address,
+                    symbol: _toToken.symbol,
+                    decimals: _toToken.decimals,
+                    name: _toToken.name,
+                    logoURI: _toToken.logoURI,
+                    amount: Number(amt),
+                };
+                setWidgetData((prev) => ({
+                    ...prev,
+                    toToken: formattedData,
+                }));
             })();
         }
-    }, [widgetData.fromToken.address, widgetData.fromToken.amount]);
+    }, [
+        widgetData.fromToken.address,
+        widgetData.fromToken.amount,
+        widgetData.toToken.address,
+    ]);
 
     return (
         <WidgetContext.Provider value={widgetData}>

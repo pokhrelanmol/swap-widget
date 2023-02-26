@@ -11,6 +11,7 @@ import axios from "axios";
 import { parseEther } from "ethers";
 const SwapWidget = () => {
     const [type, setType] = useState<"to" | "from">("from");
+
     const {
         showSearchModal,
         toToken,
@@ -20,6 +21,11 @@ const SwapWidget = () => {
         toggleSearch,
     } = useWidgetContext();
 
+    const handleSwapInput = () => {
+        console.log(fromToken, toToken);
+        setFromToken(toToken);
+        setToToken(fromToken);
+    };
     const handleClick = (type: "to" | "from") => {
         setType(type);
         toggleSearch();
@@ -73,8 +79,9 @@ const SwapWidget = () => {
                         </div>
 
                         <CgArrowsExchangeAltV
+                            onClick={handleSwapInput}
                             className="text-6xl text-gray-400 p-1 border border-[#ccc] bg-bg rounded-full
-               hover:animate-pulse transition duration-300 absolute top-[50%] left-[50%]
+               hover:animate-pulse cursor-pointer transition duration-300 absolute top-[50%] left-[50%]
               -translate-x-[50%] -translate-y-[50%]
             "
                         />
@@ -87,6 +94,7 @@ const SwapWidget = () => {
                                 id="price"
                                 value={toToken.amount}
                                 className="px-4 py-7 text-2xl border border-gray-500 text-gray-400 outline-none font-mono w-full rounded-lg bg-transparent"
+                                disabled={true}
                             >
                                 <Button
                                     token={toToken}

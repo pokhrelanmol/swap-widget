@@ -10,6 +10,7 @@ export interface InputProps {
     name?: string;
     error?: string;
     onError?: (error: string) => void;
+    disabled?: boolean;
 }
 
 export interface SearchBarProps {}
@@ -25,6 +26,7 @@ export interface TokenInputProps {
     tokenSymbol?: string;
     selected?: boolean;
     tokenAddress: string;
+    decimals: number;
     type?: "from" | "to";
     setTokenData?: (tokenData: TokenData) => void;
 }

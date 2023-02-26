@@ -50,6 +50,7 @@ const SearchModal = (props: SearchModal) => {
                         tokenSymbol={token.symbol}
                         type={props.type}
                         tokenAddress={token.address}
+                        decimals={token.decimals}
                     />
                 ))}
             </ul>

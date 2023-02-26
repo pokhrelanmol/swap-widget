@@ -8,6 +8,6 @@ export interface TokenData {
     amount?: number;
     name: string;
     symbol: string;
-    decimals?: number;
+    decimals: number;
     logoURI: string;
 }

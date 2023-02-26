@@ -18,6 +18,7 @@ const Input = (props: InputProps) => {
                     "w-full h-full text-xl border border-gray-600 text-gray-400 outline-none font-mono rounded-lg bg-transparent"
                 }
                 style={props.error ? { border: "1px solid red" } : {}}
+                disabled={props.disabled}
             />
 
             {props.children}

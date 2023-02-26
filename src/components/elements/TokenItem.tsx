@@ -11,17 +11,21 @@ const TokenItem = (props: TokenInputProps) => {
     const handleClick = () => {
         if (props.type === "from") {
             setFromToken({
+                ...fromToken,
                 name: props.tokenName,
                 symbol: props.tokenSymbol!,
                 logoURI: props.tokenImage,
                 address: props.tokenAddress,
+                decimals: props.decimals,
             });
         } else {
             setToToken({
+                ...toToken,
                 name: props.tokenName,
                 symbol: props.tokenSymbol!,
                 logoURI: props.tokenImage,
                 address: props.tokenAddress,
+                decimals: props.decimals,
             });
         }
         setSelected((prev) => !prev);
