@@ -3,15 +3,19 @@ import reactLogo from "./assets/react.svg";
 // import Modal from "./components/Modal"
 import ShowButton from "./components/ShowButton";
 import SwapWidget from "./components/SwapWidget";
+import { actionTypes } from "./components/SwapWidget/actions";
 import { useWidgetContext } from "./components/SwapWidget/WidgetProvider";
 
 function App() {
     const [count, setCount] = useState(0);
 
-    const { showWidgetModal, toggleWidget } = useWidgetContext();
+    const { state, dispatch } = useWidgetContext();
 
     const handleClick = () => {
-        toggleWidget();
+        dispatch({
+            type: actionTypes.TOGGLE_WIDGET,
+            payload: true,
+        });
     };
 
     return (
@@ -38,8 +42,8 @@ function App() {
                     Count is: {count}
                 </button>
             </div>
-            {showWidgetModal ? <SwapWidget /> : ""}
-            <ShowButton setShow={handleClick} show={showWidgetModal} />
+            {state.showWidgetModal ? <SwapWidget /> : ""}
+            <ShowButton setShow={handleClick} show={state.showWidgetModal} />
         </div>
     );
 }

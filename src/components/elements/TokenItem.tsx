@@ -1,37 +1,53 @@
 import React, { useState } from "react";
-import { MdCheck, MdFactCheck } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
+import { actionTypes } from "../SwapWidget/actions";
 import { useWidgetContext } from "../SwapWidget/WidgetProvider";
 import { TokenInputProps } from "./types";
 
 const TokenItem = (props: TokenInputProps) => {
     const [selected, setSelected] = useState(false);
-    const { toggleSearch } = useWidgetContext();
-    const { setToToken, setFromToken, toToken, fromToken, setLoading } =
-        useWidgetContext();
+    const { state, dispatch } = useWidgetContext();
 
     const handleClick = () => {
         if (props.type === "from") {
-            setLoading(true);
-            setFromToken({
-                ...fromToken,
-                name: props.tokenName,
-                symbol: props.tokenSymbol!,
-                logoURI: props.tokenImage,
-                address: props.tokenAddress,
-                decimals: props.decimals,
+            dispatch({
+                type: actionTypes.SET_LOADING,
+                payload: true,
+            });
+
+            dispatch({
+                type: actionTypes.SET_FROM_TOKEN,
+                payload: {
+                    ...state.fromToken,
+                    name: props.tokenName,
+                    symbol: props.tokenSymbol!,
+                    logoURI: props.tokenImage,
+                    address: props.tokenAddress,
+                    decimals: props.decimals,
+                },
             });
         } else {
-            setToToken({
-                ...toToken,
-                name: props.tokenName,
-                symbol: props.tokenSymbol!,
-                logoURI: props.tokenImage,
-                address: props.tokenAddress,
-                decimals: props.decimals,
+            dispatch({
+                type: actionTypes.SET_LOADING,
+                payload: true,
+            });
+            dispatch({
+                type: actionTypes.SET_TO_TOKEN,
+                payload: {
+                    ...state.toToken,
+                    name: props.tokenName,
+                    symbol: props.tokenSymbol!,
+                    logoURI: props.tokenImage,
+                    address: props.tokenAddress,
+                    decimals: props.decimals,
+                },
             });
         }
         setSelected((prev) => !prev);
-        toggleSearch();
+        dispatch({
+            type: actionTypes.TOGGLE_SEARCH,
+            payload: false,
+        });
     };
 
     return (

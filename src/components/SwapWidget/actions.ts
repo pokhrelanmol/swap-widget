@@ -48,38 +48,3 @@ export type Action =
     | SET_LOADING
     | TOGGLE_SEARCH
     | TOGGLE_WIDGET;
-
-export const setFromToken = (token: TokenData) => {
-    return {
-        type: actionTypes.SET_FROM_TOKEN,
-        payload: token,
-    };
-};
-
-export const setToToken = (token: TokenData) => {
-    return {
-        type: actionTypes.SET_TO_TOKEN,
-        payload: token,
-    };
-};
-
-export const setLoading = (loading: boolean) => {
-    return {
-        type: actionTypes.SET_LOADING,
-        payload: loading,
-    };
-};
-
-export const toggleSearch = (showSearchModal: boolean) => {
-    return {
-        type: actionTypes.TOGGLE_SEARCH,
-        payload: showSearchModal,
-    };
-};
-
-export const toggleWidget = (showWidgetModal: boolean) => {
-    return {
-        type: actionTypes.TOGGLE_WIDGET,
-        payload: showWidgetModal,
-    };
-};

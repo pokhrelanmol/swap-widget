@@ -5,42 +5,16 @@ import React, {
     useEffect,
     useReducer,
 } from "react";
-import { TokenData, WidgetDataType } from "./types";
-import { tokenData } from "../../constants/mockdata";
-import { formatUnits, parseEther, parseUnits } from "ethers";
+import { TokenData, WidgetContextProps } from "./types";
+import { formatUnits, parseUnits } from "ethers";
 import axios from "axios";
-import { initialState } from "./actions";
+import { initialState, actionTypes, Action } from "./actions";
 import { reducer } from "./reducer";
-// export interface WidgetContextProps {
-//     showWidgetModal: boolean;
-//     showSearchModal: boolean;
-//     toToken: TokenData;
-//     fromToken: TokenData;
-//     toggleWidget: () => void;
-//     toggleSearch: () => void;
-//     setToToken: (token: TokenData) => void;
-//     setFromToken: (token: TokenData) => void;
-//     loading: boolean;
-//     setLoading: (loading: boolean) => void;
-// }
 
-export const WidgetContext = createContext<WidgetDataType>({
-    showSearchModal: false,
-    showWidgetModal: false,
-    toToken: {
-        ...(tokenData.tokens[1] as unknown as TokenData),
-    },
-    fromToken: {
-        ...(tokenData.tokens[0] as unknown as TokenData),
-    },
-    toggleWidget: () => {},
-    toggleSearch: () => {},
-    loading: false,
+export const WidgetContext = createContext<WidgetContextProps>({
+    state: initialState,
+    dispatch: () => null,
 });
-
-export const useWidgetContext = () => {
-    return useContext(WidgetContext);
-};
 
 const WidgetProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -65,10 +39,10 @@ const WidgetProvider = ({ children }: { children: React.ReactNode }) => {
 
                 // fetch exchange rate in USD for token
                 const fromTokenRes = await axios.get(
-                    `https://min-api.cryptocompare.com/data/price?fsym=${widgetData.fromToken.symbol}&tsyms=USD`
+                    `https://min-api.cryptocompare.com/data/price?fsym=${state.fromToken.symbol}&tsyms=USD`
                 );
                 const toTokenRes = await axios.get(
-                    `https://min-api.cryptocompare.com/data/price?fsym=${widgetData.toToken.symbol}&tsyms=USD`
+                    `https://min-api.cryptocompare.com/data/price?fsym=${state.toToken.symbol}&tsyms=USD`
                 );
 
                 const formattedData: TokenData = {
@@ -81,29 +55,37 @@ const WidgetProvider = ({ children }: { children: React.ReactNode }) => {
                     USD: toTokenRes.data.USD,
                 };
 
-                setWidgetData((prev) => ({
-                    ...prev,
-                    toToken: formattedData,
-                    fromToken: {
-                        ...prev.fromToken,
+                dispatch({
+                    type: actionTypes.SET_FROM_TOKEN,
+                    payload: {
+                        ...state.fromToken,
                         USD: fromTokenRes.data.USD,
                     },
-                }));
+                });
 
-                setLoading(false);
+                dispatch({
+                    type: actionTypes.SET_TO_TOKEN,
+                    payload: formattedData,
+                });
+                dispatch({
+                    type: actionTypes.SET_LOADING,
+                    payload: false,
+                });
             })();
         }
     }, [
-        widgetData.fromToken.address,
-        widgetData.fromToken.amount,
-        widgetData.toToken.address,
+        state.fromToken.address,
+        state.fromToken.amount,
+        state.toToken.address,
     ]);
 
     return (
-        <WidgetContext.Provider value={widgetData}>
+        <WidgetContext.Provider value={{ state, dispatch }}>
             {children}
         </WidgetContext.Provider>
     );
 };
 
 export default WidgetProvider;
+
+export const useWidgetContext = () => useContext(WidgetContext);
