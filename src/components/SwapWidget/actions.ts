@@ -2,7 +2,7 @@ import { TokenData, WidgetDataType } from "./types";
 import { tokenData } from "../../constants/mockdata";
 export const initialState: WidgetDataType = {
     showSearchModal: false,
-    showWidgetModal: false,
+    showWidgetModal: true,
     toToken: tokenData.tokens[1] as unknown as TokenData,
     fromToken: tokenData.tokens[0] as unknown as TokenData,
     toggleWidget: () => {},

@@ -6,7 +6,7 @@ import React, {
     useReducer,
 } from "react";
 import { TokenData, WidgetContextProps } from "./types";
-import { formatUnits, parseUnits } from "ethers";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import axios from "axios";
 import { initialState, actionTypes, Action } from "./actions";
 import { reducer } from "./reducer";
@@ -78,7 +78,6 @@ const WidgetProvider = ({ children }: { children: React.ReactNode }) => {
         state.fromToken.amount,
         state.toToken.address,
     ]);
-
     return (
         <WidgetContext.Provider value={{ state, dispatch }}>
             {children}

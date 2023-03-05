@@ -7,11 +7,14 @@ import { CgArrowsExchangeAltV } from "react-icons/cg";
 
 import { actionTypes } from "./actions";
 import { useState } from "react";
+import { useAccount } from "wagmi";
+import ButtonConnect from "../elements/ButtonConnect";
+import SwapButton from "../elements/SwapButton";
 const SwapWidget = () => {
     const [type, setType] = useState<"to" | "from">("from");
+    const { address, isConnected } = useAccount();
 
     const { state, dispatch } = useWidgetContext();
-
     const handleSwapInput = () => {
         dispatch({
             type: actionTypes.SET_FROM_TOKEN,
@@ -126,6 +129,9 @@ const SwapWidget = () => {
                         <p>{state.loading && "Fetching best prices..."}</p>
                     </div>
                 )}
+            </div>
+            <div className="w-full flex justify-center mb-4">
+                {isConnected ? <SwapButton /> : <ButtonConnect />}
             </div>
         </div>
     );
